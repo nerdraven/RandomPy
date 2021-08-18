@@ -1,10 +1,8 @@
-from app import Player, Game, Result
+from src.domain.entities import Player, Game, Result
 
 def test_computer_result():
-
   res = Game.compute_result("1234", "1234")
   assert res == Result(4, 0)
-
 
   res = Game.compute_result("1437", "1234")
   assert res == Result(2, 1)
