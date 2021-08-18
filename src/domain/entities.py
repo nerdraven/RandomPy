@@ -10,6 +10,11 @@ from abc import ABC
 config = get_config()
 
 
+"""
+  Base Objects
+"""
+
+
 class ValueObject:
   pass
 
@@ -32,6 +37,7 @@ class Entity(object):
   
   def __hash__(self) -> int:
     return hash(self.id)
+
 
 @dataclass
 class Result(ValueObject):
@@ -141,6 +147,11 @@ class Game(Entity):
           injured_count += 1
 
     return Result(dead_count, injured_count)
+
+
+"""
+  Factories
+"""
 
 
 def create_game(players: List[Player], game_pool: AbstractGamePool):
