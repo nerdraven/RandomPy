@@ -14,13 +14,11 @@ The player with the lowest amount of tries on a game wins.
 This game is available of all platforms
 
 ## Overview
+This application uses a small backend to generate a session with a player
+and provides a simple UI to get all user interaction.
+
 This application will be deployed on Linux, Web, Android and Console.
 
 Current Version: 1.0.0
 
 License: MIT
-
-> ### Summary
->
-> This application uses a small backend to generate a session with a player
-> and provides a simple UI to get all user interaction.

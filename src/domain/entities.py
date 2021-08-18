@@ -19,6 +19,7 @@ class Player(object):
   This is a player which is to be available only
   within a single game. This player has the information
   it needs to be valid player
+
   :param id: Player id
   :param code: Player's main code
   """
@@ -34,6 +35,7 @@ class Game(object):
   This is a Game state with a unique set of players
   within. It tracks all the moves made, the points
   won, duration, etc.
+
   :param id: Game Id
   :param players: All players in a game
   """
@@ -65,14 +67,20 @@ class Game(object):
 
     This will compute the Result of a player's test_code on
     it's opponents main_code.
+
+    :params test_code: Player's test code
+    :params main_code: Opponent's main code
     """
     dead_count = injured_count = 0
 
     for i in range(config.SIZE):
+      # Test if they match exactly at the same index
       if test_code[i] == main_code[i]:
         dead_count += 1
         continue
 
+      # Test if it at all its in the main code
+      # TODO Optimize this using `in`
       for j in range(config.SIZE):
         if test_code[i] == main_code[j]:
           injured_count += 1
