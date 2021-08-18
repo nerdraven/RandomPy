@@ -1,36 +1,38 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import List, Tuple, Union
+from typing import List, Set, Tuple, Union
 from dataclasses import dataclass
-from app.config import get_config
+from src.app.config import get_config
 from abc import ABC
 
 config = get_config()
 
 
-@dataclass
 class ValueObject:
   pass
 
 
-@dataclass
 class Event:
   pass
 
 class Entity(object):
   def __init__(self, id: str) -> None:
-      self.id = id
+    self.id = id
+    self.events: Set[Event] = list()
+
+  def publish_event(self, event: Event):
+    self.events.append(event)
 
   def __eq__(self, other: Player) -> bool:
-      if not isinstance(self, other):
-        return False
-      return self.id == other.id
+    if not isinstance([other], Entity):
+      return False
+    return self.id == other.id
   
   def __hash__(self) -> int:
-      return hash(self.id)
+    return hash(self.id)
 
-
+@dataclass
 class Result(ValueObject):
   """The Result of a play in a Game session"""
   dead_count: int
@@ -63,24 +65,29 @@ class Game(Entity):
   :param id: Game Id
   :param players: All players in a game
   """
-
-  class Started(Event):
-    pass
-
   # This is the player's index, player's test code and the time delta
   Move = Tuple[int, str, datetime]
 
+  @dataclass
+  class Started(Event):
+    pass
+
+  @dataclass
+  class Played(Event):
+    move: Game.Move
+
   def __init__(self, id: str, players: List[Player]=[]):
     super().__init__(id)
-    self.players = set(players)
+    self.players = list(players)
     self._moves = set()
     self.start_time = datetime.now()
 
   def add_player(self, player: Player) -> None:
-    self.players.add(player)
+    self.players.append(player)
 
   def is_started(self) -> bool:
     if len(self.players) == 2:
+      self.publish_event(Game.Started())
       return True
     return False
 
@@ -96,6 +103,7 @@ class Game(Entity):
 
   def add_move(self, move: Move):
     self._moves.add(move)
+    self.publish_event(Game.Played(move))
 
   @classmethod
   def compute_result(cls, test_code: str, main_code: str) -> Result:
@@ -141,17 +149,18 @@ class GamePool:
   @classmethod
   def pop(cls) -> Union[Game, None]:
     try:
-      cls._games.pop()
+      return cls._games.pop()
     except KeyError:
       return None
 
-
-def create_game(player: Player):
+# TODO: Refactor to make independent of GamePool
+def create_game(players: List[Player]):
   game = GamePool.pop()
   if game == None:
     game = Game("123")
     GamePool.push(game)
-  game.add_player(player)
+  for player in players:
+    game.add_player(player)
   return game
 
 
