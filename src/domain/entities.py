@@ -1,19 +1,43 @@
+from __future__ import annotations
+
 from datetime import datetime
-from typing import List, Tuple
+from typing import List, Tuple, Union
 from dataclasses import dataclass
 from app.config import get_config
+from abc import ABC
 
 config = get_config()
 
 
 @dataclass
-class Result:
+class ValueObject:
+  pass
+
+
+@dataclass
+class Event:
+  pass
+
+class Entity(object):
+  def __init__(self, id: str) -> None:
+      self.id = id
+
+  def __eq__(self, other: Player) -> bool:
+      if not isinstance(self, other):
+        return False
+      return self.id == other.id
+  
+  def __hash__(self) -> int:
+      return hash(self.id)
+
+
+class Result(ValueObject):
   """The Result of a play in a Game session"""
   dead_count: int
   injured_count: int
 
 
-class Player(object):
+class Player(Entity):
   """A Player in a Game session
 
   This is a player which is to be available only
@@ -25,11 +49,11 @@ class Player(object):
   """
 
   def __init__(self, id: int, code: str):
-    self.id = id
+    super().__init__(id)
     self.code = code
 
 
-class Game(object):
+class Game(Entity):
   """A Game state
 
   This is a Game state with a unique set of players
@@ -39,16 +63,28 @@ class Game(object):
   :param id: Game Id
   :param players: All players in a game
   """
+
+  class Started(Event):
+    pass
+
   # This is the player's index, player's test code and the time delta
   Move = Tuple[int, str, datetime]
 
-  def __init__(self, id: str, players: List[Player]) -> None:
-      self.id = id
-      self.players = players
-      self._moves = set()
-      self.start_time = datetime.now()
+  def __init__(self, id: str, players: List[Player]=[]):
+    super().__init__(id)
+    self.players = set(players)
+    self._moves = set()
+    self.start_time = datetime.now()
+
+  def add_player(self, player: Player) -> None:
+    self.players.add(player)
+
+  def is_started(self) -> bool:
+    if len(self.players) == 2:
+      return True
+    return False
     
-  def time_delta(self, current_time: datetime=datetime.now()):
+  def time_delta(self, current_time: datetime=datetime.now()) -> datetime:
     return current_time - self.start_time
 
   def play(self, test_code: str, player_id: int) -> Result:
@@ -86,3 +122,31 @@ class Game(object):
           injured_count += 1
 
     return Result(dead_count, injured_count)
+
+
+class GamePool:
+  _games = set()
+
+  @classmethod
+  def push(cls, game: Game):
+    cls._games.add(game)
+  
+  @classmethod
+  def pop(cls) -> Union[Game, None]:
+    try:
+      cls._games.pop()
+    except KeyError:
+      return None
+
+
+def create_game(players: List[Player]):
+  game = GamePool.pop()
+  if game == None:
+    game = Game("123")
+  for player in players:
+    game.add_player(player)
+  return game
+
+
+def create_player(user_name: str, code: str):
+  return Player(user_name, code)
