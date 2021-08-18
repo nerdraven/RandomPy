@@ -1,4 +1,5 @@
-from src.domain.entities import Player, Game, Result
+from src.domain.services import start_game
+from src.domain.entities import Player, Game, Result, create_player
 
 def test_computer_result():
   res = Game.compute_result("1234", "1234")
@@ -18,6 +19,11 @@ def test_play_game():
   res = game.play("1437", 0)
   assert res == Result(2, 1)
 
-if __name__ == "__main__":
-  test_computer_result()
-  test_play_game()
+def test_start_game_service():
+  player_1 = create_player("Damian", "1234")
+  game_1, is_started = start_game([player_1])
+  assert is_started == False
+
+  player_2 = create_player("Damian", "1234")
+  game_2, is_started = start_game([player_1])
+  assert is_started == True

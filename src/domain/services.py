@@ -1,5 +1,5 @@
 from typing import Tuple
-from domain.entities import create_game, Player, Game
+from src.domain.entities import create_game, Player, Game
 
 
 def start_game(player: Player) -> Tuple[Game, bool]:
