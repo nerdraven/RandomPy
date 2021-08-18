@@ -84,6 +84,8 @@ class Game(Entity):
 
   # TODO: Use instead of List
   def add_player(self, player: Player) -> None:
+    if self.is_started():
+      raise Exception("Game already complete")
     self.players.append(player)
 
   def is_started(self) -> bool:
@@ -98,10 +100,13 @@ class Game(Entity):
     return self.compute_result(test_code, player.code)
 
   def get_opponent(self, player_id: str) -> Player:
+    print([p.id for p in self.players])
+    if player_id not in [p.id for p in self.players]:
+      raise Exception("Wrong game")
+
     for player in self.players:
       if player.id != player_id:
         return player
-    raise Exception("Wrong game")
 
   def _time_delta(self, current_time: datetime=datetime.now()) -> datetime:
     return current_time - self.start_time
