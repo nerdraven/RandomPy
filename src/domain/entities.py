@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from src.domain.game_pool import AbstractGamePool, FakeGamePool
 from typing import List, Set, Tuple, Union
 from dataclasses import dataclass
 from src.app.config import get_config
@@ -142,33 +143,11 @@ class Game(Entity):
     return Result(dead_count, injured_count)
 
 
-# TODO: Make this follow SOLID
-class GamePool:
-  """\
-
-  This contains all the games that are awaiting another player
-  for it to start.
-  """
-
-  _games = set()
-
-  @classmethod
-  def push(cls, game: Game):
-    cls._games.add(game)
-  
-  @classmethod
-  def pop(cls) -> Union[Game, None]:
-    try:
-      return cls._games.pop()
-    except KeyError:
-      return None
-
-# TODO: Refactor to make independent of GamePool
-def create_game(players: List[Player]):
-  game = GamePool.pop()
+def create_game(players: List[Player], game_pool: AbstractGamePool):
+  game = game_pool.pop()
   if game == None:
     game = Game("123")
-    GamePool.push(game)
+    game_pool.push(game)
   for player in players:
     game.add_player(player)
   return game
