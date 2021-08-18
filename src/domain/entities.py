@@ -83,7 +83,7 @@ class Game(Entity):
     if len(self.players) == 2:
       return True
     return False
-    
+
   def time_delta(self, current_time: datetime=datetime.now()) -> datetime:
     return current_time - self.start_time
 
@@ -124,7 +124,14 @@ class Game(Entity):
     return Result(dead_count, injured_count)
 
 
+# TODO: Make this follow SOLID
 class GamePool:
+  """\
+
+  This contains all the games that are awaiting another player
+  for it to start.
+  """
+
   _games = set()
 
   @classmethod
@@ -139,12 +146,12 @@ class GamePool:
       return None
 
 
-def create_game(players: List[Player]):
+def create_game(player: Player):
   game = GamePool.pop()
   if game == None:
     game = Game("123")
-  for player in players:
-    game.add_player(player)
+    GamePool.push(game)
+  game.add_player(player)
   return game
 
 
