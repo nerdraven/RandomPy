@@ -82,6 +82,7 @@ class Game(Entity):
     self._moves = set()
     self.start_time = datetime.now()
 
+  # TODO: Use instead of List
   def add_player(self, player: Player) -> None:
     self.players.append(player)
 
@@ -91,17 +92,21 @@ class Game(Entity):
       return True
     return False
 
-  def time_delta(self, current_time: datetime=datetime.now()) -> datetime:
+  def play(self, test_code: str, player_id: str) -> Result:
+    self._add_move((player_id, test_code, self._time_delta()))
+    player = self.get_opponent(player_id)
+    return self.compute_result(test_code, player.code)
+
+  def get_opponent(self, player_id: str) -> Player:
+    for player in self.players:
+      if player.id != player_id:
+        return player
+    raise Exception("Wrong game")
+
+  def _time_delta(self, current_time: datetime=datetime.now()) -> datetime:
     return current_time - self.start_time
 
-  def play(self, test_code: str, player_id: int) -> Result:
-    self.add_move((player_id, test_code, self.time_delta()))
-    player = self.players[abs(player_id - 1)]
-
-    res = self.compute_result(test_code, player.code)
-    return res
-
-  def add_move(self, move: Move):
+  def _add_move(self, move: Move):
     self._moves.add(move)
     self.publish_event(Game.Played(move))
 
