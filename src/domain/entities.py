@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-from datetime import datetime
-from src.domain.game_pool import AbstractGamePool, FakeGamePool
-from typing import List, Set, Tuple, Union
-from dataclasses import dataclass
-from src.app.config import get_config
 from abc import ABC
+from datetime import datetime
+from dataclasses import dataclass
+from typing import List, Set, Tuple, Union
+
+from app.config import get_config
+from domain.repository import game_pool
 
 config = get_config()
 
@@ -107,7 +108,6 @@ class Game(Entity):
     return self.compute_result(test_code, player.code)
 
   def get_opponent(self, player_id: str) -> Player:
-    print([p.id for p in self.players])
     if player_id not in [p.id for p in self.players]:
       raise Exception("Wrong game")
 
@@ -154,11 +154,11 @@ class Game(Entity):
 """
 
 
-def create_game(players: List[Player], game_pool: AbstractGamePool):
-  game = game_pool.pop()
+def create_game(id: int, players: List[Player], pool: game_pool.AbstractGamePool):
+  game = pool.pop()
   if game == None:
-    game = Game("123")
-    game_pool.push(game)
+    game = Game(id)
+    pool.push(game)
   for player in players:
     game.add_player(player)
   return game
