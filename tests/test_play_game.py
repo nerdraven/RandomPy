@@ -48,7 +48,7 @@ def test_play_move_service():
 
   assert res == Result(4, 0)
 
-def _test_play_in_an_outside_game_fails():
+def test_play_in_an_outside_game_fails():
   pool = GamePool()
   repo = Repository()
   player_1 = create_player("player-1", "1234")
@@ -59,10 +59,10 @@ def _test_play_in_an_outside_game_fails():
 
   player_3 = create_player("player-3", "1234")
 
-  pytest.fail("Hello")
-  res = play_move("1234", player_3.id, game_2.id, repo)
+  with pytest.raises(Exception):
+    res = play_move("1234", player_3.id, game_2.id, repo)
 
-def _test_add_player_in_full_game_fails():
+def test_add_player_in_full_game_fails():
   pool = GamePool()
   repo = Repository()
   player_1 = create_player("player-1", "1234")
@@ -72,4 +72,5 @@ def _test_add_player_in_full_game_fails():
   game_2, _ = start_game([player_2], pool, repo)
 
   player_3 = create_player("player-3", "1234")
-  game_2.add_player(player_3)
+  with pytest.raises(Exception):
+    game_2.add_player(player_3)
