@@ -1,3 +1,6 @@
+node_modules/
+build/
 __pycache__/
 venv/
 setup_test.py
+.env
