@@ -1,3 +1,11 @@
-__pycache__/
+
+# Core
+.env*
+
+# Python
 venv/
-setup_test.py
+__pycache__/
+
+# NodeJs
+build/
+node_modules/
