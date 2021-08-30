@@ -2,13 +2,13 @@ FROM node:16.0.0-slim as build
 
 WORKDIR /usr/src/app
 
-COPY *.json .
+COPY *.json /usr/src/app/
 COPY yarn.lock .
 COPY package.json .
 
 RUN yarn install
 
-COPY src/ /usr/src/app/
+COPY src/ /usr/src/app/src/
 RUN yarn build
 
 FROM node:16.0.0-slim
@@ -17,6 +17,6 @@ WORKDIR /usr/src/app
 
 COPY --from=build /usr/src/app/dist/server .
 COPY --from=build /usr/src/app/package.json .
-COPY --from=build /usr/src/app/node_modules .
+COPY --from=build /usr/src/app/node_modules/ node_modules/
 
-ENTRYPOINT [ "yarn" "start" ]
+ENTRYPOINT [ "yarn", "start" ]
