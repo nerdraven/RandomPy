@@ -1,10 +1,13 @@
-import express from "express";
-import config from "../app/config";
 import morgan from "morgan";
-
-const PORT = config.core.PORT;
+import express from "express";
+import game from "./routes/game";
+import config from "../app/config";
 
 const server = express();
+const PORT = config.core.PORT;
+
+server.use(express.json());
+server.use(game);
 server.use(morgan("combined"));
 
 server.get("/", (_, res) => {
