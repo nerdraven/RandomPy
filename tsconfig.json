@@ -4,7 +4,7 @@
     "module": "commonjs",
     "declaration": true,
     "rootDir": "src/server",
-    "outDir": "build/server",
+    "outDir": "dist/server",
     "removeComments": true,
     "strict": true,
     "noImplicitAny": true,

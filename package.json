@@ -10,7 +10,7 @@
   "scripts": {
     "test": "",
     "build": "tsc",
-    "start": "node build/server/web/index.js",
+    "start": "node web/index.js",
     "dev:start": "ts-node-dev --respawn src/server/web/index.ts"
   },
   "author": "Damian Akpan",
