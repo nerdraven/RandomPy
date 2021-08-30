@@ -1,7 +1,7 @@
 import { Game } from "../entities";
 
 
-interface IRepository {
+export interface IRepository {
   add: (game: Game) => void;
   get: (gameId: string) => Game;
   update: (gameId: string, game: Game) => Game;
@@ -9,7 +9,7 @@ interface IRepository {
 
 export class FakeRepository implements IRepository {
   constructor(
-    private readonly db: Record<string, Game> = {}
+    public readonly db: Record<string, Game> = {}
   ){}
 
   add(game: Game): void {
@@ -21,9 +21,12 @@ export class FakeRepository implements IRepository {
   }
   get(gameId: string): Game {
     try {
-      return this.db[gameId];
+      const data = this.db[gameId];
+      if(!data)
+        throw new Error("");
+      return data;
     } catch (error) {
-      throw new Error("Game not found");
+      throw new Error("Game was not saved in Repo");
     }
   }
 }

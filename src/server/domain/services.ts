@@ -1,22 +1,34 @@
 import { createGame, Game, Player, Result } from "./entities";
+import { IRepository } from "./repositories/game";
+import { IGamePool } from "./repositories/gamePool";
+import { nanoid } from "nanoid";
 
-
-export function startGame(player: Array<Player>, pool: Array<Game>, repo: Array<Game>): [Game, boolean] {
-  const id = "Hello";
+export function startGame(
+  player: Array<Player>,
+  pool: IGamePool,
+  repo: IRepository
+): [Game, boolean] {
+  const id = nanoid();
   const game = createGame(id, player, pool);
-  if(game.isStarted())
-    repo.push(game);
+  if (game.isStarted()) {
+    console.log("Game added to repo", game.id);
+    repo.add(game);
+  }
   return [game, game.isStarted()];
 }
 
-export function playMove(testCode: string, playerId: string, repo: Array<Game>): Result {
+export function playMove(
+  testCode: string,
+  playerId: string,
+  gameId: string,
+  repo: IRepository
+): Result {
   try {
     // TODO: Repo is wrong
-    const game = repo[0];
+    const game = repo.get(gameId);
     const res = game.play(testCode, playerId);
-    repo[0] = game;
     return res;
   } catch (e) {
-    throw new Error("Game not found");
+    throw new Error(e);
   }
 }

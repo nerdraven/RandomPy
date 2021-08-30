@@ -1,3 +1,4 @@
+import { IGamePool } from "./repositories/gamePool";
 
 class ValueObject {}
 class DomainEvent {}
@@ -9,24 +10,16 @@ export class Result implements ValueObject {
 type Move = [string, string, number];
 
 class Entity {
-  constructor(
-    public readonly id: string,
-    private events: Array<DomainEvent> = []
-  ) {}
-
+  private events: Array<DomainEvent> = [];
+  constructor(public readonly id: string) {}
   publishEvent(event: DomainEvent) {
     this.events.push(event);
   }
 }
 
-export class Player extends Entity {
-  public readonly code: string;
-  constructor(id: string, code: string) {
-    super(id);
-    this.code = code;
-  }
+export class Player {
+  constructor(public readonly id: string, public readonly code: string) {}
 }
-
 
 class Started extends DomainEvent {}
 class Played extends DomainEvent {}
@@ -65,27 +58,25 @@ export class Game extends Entity {
     this.players.forEach((player) => {
       ids.push(player.id);
     });
-    if (!(playerId in ids)) {
-      throw new Error("Wrong Game");
+    if (!ids.includes(playerId)) {
+      throw new Error("Player not found");
     }
-
-    for (let i = 0; i <= this.players.length; i++) {
+    for (let i = 0; i <= this.players.length - 1; i++) {
       const player = this.players[i];
-      if (player.id != playerId) return this.players[i];
+      if (player.id == playerId) return this.players[1 - i];
     }
   }
-
 
   public static computeResult(testCode: string, mainCode: string): Result {
     let deadCount = 0,
       injuredCount = 0;
 
-    for (let i = 0; i <= 4; i++) {
+    for (let i = 0; i < 4; i++) {
       if (testCode[i] == mainCode[i]) {
         deadCount += 1;
         continue;
       }
-      for (let j = 0; i <= 4; i++) {
+      for (let j = 0; j < 4; j++) {
         if (testCode[i] == mainCode[j]) {
           injuredCount += 1;
         }
@@ -107,9 +98,15 @@ export class Game extends Entity {
 
 /* Factories */
 
-export function createGame(id: string, players: Array<Player>, pool: Array<Game>): Game {
-  let game = pool.pop();
-  if(game == null){
+export function createGame(
+  id: string,
+  players: Array<Player>,
+  pool: IGamePool
+): Game {
+  let game: Game;
+  try {
+    game = pool.pop();
+  } catch (error) {
     game = new Game(id);
     pool.push(game);
   }

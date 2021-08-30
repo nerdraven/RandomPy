@@ -1,6 +1,6 @@
 import { Game } from "../entities";
 
-interface IGamePool {
+export interface IGamePool {
   push: (game: Game) => void;
   pop: () => Game;
 }
