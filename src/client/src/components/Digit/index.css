@@ -1,0 +1,12 @@
+.digits {
+  display: flex;
+  margin: 0 0;
+  grid-column-gap: 20px;
+  column-gap: 20px;
+  padding: 30px;
+  /* background-color: blue; */
+}
+
+.digit {
+  flex: 1;
+}
