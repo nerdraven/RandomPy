@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Number Display</title>
+	<script type="text/javascript" src="http://d3js.org/d3.v3.js"></script>
+	<script type="text/javascript" src="NumberDisplay.js"></script>
+	<style type="text/css">
+		body {
+			font-family: "Helvetica Neue", sans-serif;
+			font-weight: 300;
+			margin: 32px;
+		}
+
+		svg {
+			background: #111;
+			border-radius: 5px;
+		}
+
+		.digit {
+			fill: #444;
+		}
+
+		.lit {
+			fill: #f44;
+			stroke: #a22;
+			stroke-width: 1.2;
+		}
+	</style>
+
+	<script>
+
+		d3.select(window).on('load', function () {
+
+			var display = numberDisplay('svg', 8).showNumber(0);
+
+			d3.select('#number').on('input', function () {
+				display.showNumber(this.value);
+			})
+		})
+
+	</script>
+
+</head>
+
+<body>
+	<h2>Number Display</h2>
+	<p>Imitates 7-segment displays using D<sup>3</sup>.</p>
+	<svg width="540" height="300"></svg>
+	<p>
+		<input id="number" type="range" value="0" style="width:540px" />
+	</p>
+</body>
+
+</html>

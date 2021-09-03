@@ -1,0 +1,22 @@
+{
+  "name": "react-digit-display",
+  "version": "1.0.0",
+  "description": "Hello World",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p ."
+  },
+  "author": "Damian Akpan",
+  "types": "lib/types",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/d3": "^7.0.0",
+    "@types/react": "^17.0.19",
+    "eslint": "^7.32.0",
+    "react": "^17.0.2",
+    "typescript": "^4.4.2"
+  },
+  "dependencies": {
+    "d3": "^7.0.1"
+  }
+}
