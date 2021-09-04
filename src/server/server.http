@@ -1,11 +1,12 @@
 
 @url = "http://localhost:5000"
 
-GET /
+GET http://localhost:5000/
 
 
 ###
 POST http://localhost:5000/start-game
+Content-Type: application/json
 
 {
     "username": "nerdraven",
@@ -14,9 +15,10 @@ POST http://localhost:5000/start-game
 
 ###
 POST http://localhost:5000/play-move
+Content-Type: application/json
 
 {
     "playerId": "nerdraven",    
-    "gameId": "p0AjeHaxOTBpvrT5p9xN5",
+    "gameId": "1",
     "testCode": "1234",
 }
