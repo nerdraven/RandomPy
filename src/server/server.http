@@ -1,0 +1,22 @@
+
+@url = "http://localhost:5000"
+
+GET /
+
+
+###
+POST http://localhost:5000/start-game
+
+{
+    "username": "nerdraven",
+    "mainCode": "1234"
+}
+
+###
+POST http://localhost:5000/play-move
+
+{
+    "playerId": "nerdraven",    
+    "gameId": "p0AjeHaxOTBpvrT5p9xN5",
+    "testCode": "1234",
+}
