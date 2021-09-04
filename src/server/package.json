@@ -11,7 +11,7 @@
     "test": "",
     "build": "tsc",
     "start": "node web/index.js",
-    "dev:start": "ts-node-dev --respawn src/server/web/index.ts"
+    "dev:start": "ts-node-dev --respawn src/web/index.ts"
   },
   "author": "Damian Akpan",
   "license": "ISC",
