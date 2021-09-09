@@ -8,19 +8,29 @@ import Digit from "../Digit";
 
 const Hello: FC = () => {
   const [digits, setDigits] = useState<string[]>([]);
+  const [text, setText] = useState("Hello");
   const ref = useRef<HTMLDivElement>(null);
 
-  const keyEvent = (e: { key: string; keyCode: number }) => {
-    if (e.key == "Backspace") {
+  const keyEvent = (event: { key: string; keyCode: number }) => {
+    if (event.key == "Backspace") {
       setDigits((prev) => {
         return [...prev.slice(0, -1)];
+      }); 
+    } else if (event.key == "Enter") {
+      setText((prev) => {
+        setTimeout(() => {
+          setText(prev);
+        }, 3000);
+        setDigits([]);
+        return "Hi World";
       });
-    } else if (e.keyCode < 48 || e.keyCode > 57) {
+    } else if (event.keyCode < 48 || event.keyCode > 57) {
       return;
-    } else if (digits.length < 4)
+    } else if (digits.length < 4) {
       setDigits((prev) => {
-        return [...prev, e.key];
+        return [...prev, event.key];
       });
+    }
   };
 
   useEffect(() => {
@@ -35,6 +45,7 @@ const Hello: FC = () => {
       <div className="main">
         <Logo />
         <Digit nums={digits} />
+        <p>{text}</p>
       </div>
     </div>
   );
