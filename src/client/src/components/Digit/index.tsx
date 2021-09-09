@@ -7,6 +7,7 @@ export type DigitType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0;
 
 const color = "#efd3d3";
 const opacitySegment = 0.7;
+const stroke = "#ffb8b8";
 
 type DigitProp = {
   num: string;
@@ -16,7 +17,7 @@ const Digit: FC<DigitProp> = ({ num }) => {
 
   return (
     <div className="digit">
-      <DigitalDigit digit={Number(num) as DigitType} color={color} opacitySegment={opacitySegment} />
+      <DigitalDigit digit={Number(num) as DigitType} color={color} opacitySegment={opacitySegment} stroke={stroke} />
     </div>
   );
 };
