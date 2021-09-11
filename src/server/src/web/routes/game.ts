@@ -15,10 +15,8 @@ router.post("/start-game", (req, res) => {
   const player = createPlayer(username, mainCode);
   const [game, isStarted] = startGame([player], pool, repo);
 
-  res.json({ game: game.id, isStarted });
+  res.json({ gameId: game.id, isStarted });
 });
-
-export default router;
 
 router.post("/play-move", (req, res) => {
   const testCode: string = req.body.testCode;
@@ -26,5 +24,8 @@ router.post("/play-move", (req, res) => {
   const gameId: string = req.body.gameId;
 
   const result = playMove(testCode, playerId, gameId, repo);
+
   res.json(result);
 });
+
+export default router;
