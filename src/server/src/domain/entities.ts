@@ -1,24 +1,16 @@
+import { ValueObject, DomainEvent, Entity } from "./base";
 import { IGamePool } from "./repositories/gamePool";
 
-class ValueObject {}
-class DomainEvent {}
+type Move = [string, string, number];
 
 export class Result implements ValueObject {
   constructor(public deadCount: number, public injuredCount: number) {}
 }
 
-type Move = [string, string, number];
-
-class Entity {
-  private events: Array<DomainEvent> = [];
-  constructor(public readonly id: string) {}
-  publishEvent(event: DomainEvent) {
-    this.events.push(event);
+export class Player extends Entity {
+  constructor(public readonly id: string, public readonly code: string) {
+    super(id);
   }
-}
-
-export class Player {
-  constructor(public readonly id: string, public readonly code: string) {}
 }
 
 class Started extends DomainEvent {}
@@ -96,6 +88,12 @@ export class Game extends Entity {
   }
 }
 
+export class SocketConnection extends Entity {
+  constructor(public readonly groupId: string) {
+    super(groupId);
+  }
+}
+
 /* Factories */
 
 export function createGame(
@@ -110,7 +108,7 @@ export function createGame(
     game = new Game(id);
     pool.push(game);
   }
-  players.forEach(player => {
+  players.forEach((player) => {
     (<Game>game).addPlayer(player);
   });
   return game;
