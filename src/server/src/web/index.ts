@@ -1,16 +1,28 @@
 import morgan from "morgan";
 import express from "express";
+
 import game from "./routes/game";
 import config from "../app/config";
+import { createServer } from "http";
+import { createWebSocketServer } from "./listeners";
+import { FakeRepository } from "../domain/repositories/game";
+import { FakeGamePool } from "../domain/repositories/gamePool";
 
-const server = express();
+
 const PORT = config.core.PORT;
 
-server.use(express.json());
-server.use(game);
-server.use(morgan("combined"));
+const pool = new FakeGamePool();
+const repo = new FakeRepository();
 
-server.get("/", (_, res) => {
+const app = express();
+const server = createServer(app);
+
+createWebSocketServer({ server }, pool, repo);
+app.use(express.json());
+app.use(game);
+app.use(morgan("combined"));
+
+app.get("/", (_, res) => {
   res.send("Okay");
 });
 
