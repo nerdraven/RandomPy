@@ -3,6 +3,7 @@ import { IRepository } from "./repositories/game";
 import { IGamePool } from "./repositories/gamePool";
 import { nanoid } from "nanoid";
 
+
 export function startGame(
   player: Array<Player>,
   pool: IGamePool,

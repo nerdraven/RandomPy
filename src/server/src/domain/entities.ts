@@ -13,8 +13,8 @@ export class Player extends Entity {
   }
 }
 
-class Started extends DomainEvent {}
-class Played extends DomainEvent {}
+export class Started extends DomainEvent {}
+export class Played extends DomainEvent {}
 
 export class Game extends Entity {
   private readonly players: Array<Player>;
