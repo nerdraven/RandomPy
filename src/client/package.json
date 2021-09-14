@@ -12,6 +12,7 @@
     "@types/react-dom": "^17.0.0",
     "@types/websocket": "^1.0.4",
     "digital-digit": "file:../../lib/digital-digit",
+    "event-emitter": "../../lib/event-emitter/",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
@@ -44,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "@types/ws": "^7.4.7",
     "@typescript-eslint/eslint-plugin": "^4.30.0",
     "@typescript-eslint/parser": "^4.30.0",
     "eslint": "^7.32.0",
