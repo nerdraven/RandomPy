@@ -1,0 +1,14 @@
+{
+  "name": "event-emitter",
+  "version": "1.0.0",
+  "description": "Simple Event emitter",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc -p ."
+  },
+  "author": "Damian Akpan",
+  "license": "MIT",
+  "peerDependencies": {
+    "typescript": ">=4.4.3"
+  }
+}

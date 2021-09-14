@@ -1,0 +1,9 @@
+
+# Core
+.env*
+
+# NodeJs
+dist/
+node_modules/
+coverage/
+lib/
