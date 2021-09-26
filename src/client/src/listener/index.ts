@@ -38,6 +38,14 @@ emitter.subscribe("message", (data) => {
   console.log(data);
 });
 
+emitter.subscribe("message", (data) => {
+  console.log("Subscribe for ready call");
+  const res = JSON.parse(data.data);
+  if(res.isStarted){
+    console.log("Ready");
+    emitter.emit("ready", "ready");
+  }
+});
 emitter.subscribe("close", (data) => {
   console.log(data);
 });

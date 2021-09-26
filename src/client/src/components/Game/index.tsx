@@ -3,6 +3,7 @@ import React, { useEffect, FC, useState, useRef } from "react";
 import "./index.css";
 
 import Digit from "../Digit";
+import { subscribe } from "../../listener";
 
 const Game: FC = () => {
   const [digits, setDigits] = useState<string[]>([]);
@@ -10,7 +11,6 @@ const Game: FC = () => {
   const ref = useRef<HTMLDivElement>(null);
 
   const keyEvent = (event: { key: string; keyCode: number }) => {
-    console.log(event);
     if (event.key == "Backspace") {
       setDigits((prev) => {
         return [...prev.slice(0, -1)];
@@ -33,6 +33,10 @@ const Game: FC = () => {
   };
 
   useEffect(() => {
+    subscribe("ready", () => {
+      setDigits([]);
+    });
+
     document.addEventListener("keyup", keyEvent);
     return () => {
       document.removeEventListener("keyup", keyEvent);
